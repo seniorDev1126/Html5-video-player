@@ -1,0 +1,111 @@
+
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Angular Js Test</title>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+        <style>
+            .video-play-panel {
+                position: relative;
+                width: 400px;
+            }
+            .video-play-panel:hover #btnPlayPause {
+                display: block;
+            }
+            #btnPlayPause {
+                width: 140px;
+                height: 90px;
+                background-size: contain !important;
+                position: absolute;
+                left: calc((100% - 140px) / 2);
+                top: calc((100% - 90px) / 2);
+                display: none;
+                cursor: pointer;
+                opacity: 0.8;
+            }
+            #btnPlayPause:hover {
+                opacity: 1;
+            }
+            #btnPlayPause.play {
+                background: url(video_play.png) no-repeat center;
+            }
+            #btnPlayPause.pause {
+                background: url(video_stop.png) no-repeat center;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="video-play-panel">
+            <video width="400" controls id="video-element">
+                <source src="" id="video_here">
+            </video>
+            <div class="play" id="btnPlayPause"  onclick='playPauseVideo();'></div>
+        </div>
+        <input type="file" name="file[]" class="file_multi_video" accept="video/*">
+    </body>
+    <script>
+        player = document.getElementById('video-element');
+        btnPlayPause = document.getElementById('btnPlayPause');
+
+        // $.each($("#video-element"), function(){
+        //     console.log(this);
+        //     this.controls = false; 
+        // }); 
+        // player.controls = false;
+
+        $(document).on("change", ".file_multi_video", function(evt) {
+            var $source = $('#video_here');
+            $source[0].src = URL.createObjectURL(this.files[0]);
+            $source.parent()[0].load();
+        });
+
+        player.addEventListener('play', function() {
+            // Change the button to be a pause button
+            changeButtonType(btnPlayPause, 'pause');
+        }, false);
+        
+        player.addEventListener('pause', function() {
+            // Change the button to be a play button
+            changeButtonType(btnPlayPause, 'play');
+        }, false);
+        
+        function playPauseVideo() {
+            if (player.paused || player.ended) {
+                // Change the button to a pause button
+                changeButtonType(btnPlayPause, 'pause');
+                player.play();
+            }
+            else {
+                // Change the button to a play button
+                changeButtonType(btnPlayPause, 'play');
+                player.pause();
+            }
+        }
+
+        // Updates a button's title, innerHTML and CSS class
+        function changeButtonType(btn, value) {
+            btn.title     = value;
+            btn.className = value;
+        }
+
+        document.addEventListener('contextmenu', event => event.preventDefault());
+        
+        document.onkeydown = function(e) {
+          if(event.keyCode == 123) {
+             return false;
+          }
+          if(e.ctrlKey && e.shiftKey && e.keyCode == 'I'.charCodeAt(0)) {
+             return false;
+          }
+          if(e.ctrlKey && e.shiftKey && e.keyCode == 'C'.charCodeAt(0)) {
+             return false;
+          }
+          if(e.ctrlKey && e.shiftKey && e.keyCode == 'J'.charCodeAt(0)) {
+             return false;
+          }
+          if(e.ctrlKey && e.keyCode == 'U'.charCodeAt(0)) {
+             return false;
+          }
+        }
+    </script>
+</html>
